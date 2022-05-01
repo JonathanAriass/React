@@ -1,3 +1,4 @@
+// Spread take all elements and properties and distributes them in a  new array or object
 const numbers = [1, 2, 3];
 const newNumbers = [...numbers, 4]; // Append new element to old array (spread)
 const newNumbers2 = [numbers, 4]; // List of lists
