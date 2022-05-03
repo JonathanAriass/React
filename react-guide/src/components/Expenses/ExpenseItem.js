@@ -1,9 +1,9 @@
 import ExpenseDate from "./ExpenseDate";
-import Cards from "./Cards";
+import Cards from "../UI/Cards";
 import "./ExpenseItem.css";
 
 
-function ExpenseItem(props) {
+const ExpenseItem = (props) => {
   // This is called baked data
   // const expenseDate = new Date(2021, 2, 28);
   // const expenseTitle = "Car insurance";
