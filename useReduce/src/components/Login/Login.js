@@ -51,19 +51,36 @@ const Login = (props) => {
     };
   }, []);
 
+  const { isValid: emailIsValid } = emailState; // prop: alias
+  const { isValid: passwordIsValid } = passwordState;
+
+  // The main problem with this aproach is that this code will run everytime the state of the email
+  // or password changes.
   // useEffect(() => {
   //   const identifier = setTimeout(() => {
-  //     console.log('Checking form validity!');
-  //     setFormIsValid(
-  //       enteredEmail.includes('@') && enteredPassword.trim().length > 6
-  //     );
+  //     console.log("Checking form validity!");
+  //     setFormIsValid(emailState.isValid && passwordState.isValid);
   //   }, 500);
 
   //   return () => {
-  //     console.log('CLEANUP');
+  //     console.log("CLEANUP");
   //     clearTimeout(identifier);
   //   };
-  // }, [enteredEmail, enteredPassword]);
+  // }, [emailState, passwordState]);
+
+  // Another aproach is using object destructuring to get only the property that we want to check
+  // In this case the isValid property from email and password
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      console.log("Checking form validity!");
+      setFormIsValid(emailIsValid && passwordIsValid);
+    }, 500);
+
+    return () => {
+      console.log("CLEANUP");
+      clearTimeout(identifier);
+    };
+  }, [emailIsValid, passwordIsValid]);
 
   const emailChangeHandler = (event) => {
     // In the call to the dispatcher (update the value) we need to identify the type of action taking place
