@@ -54,7 +54,7 @@ const Login = (props) => {
   const { isValid: emailIsValid } = emailState; // prop: alias
   const { isValid: passwordIsValid } = passwordState;
 
-  // The main problem with this aproach is that this code will run everytime the state of the email
+  // The main problem with this approach is that this code will run everytime the state of the email
   // or password changes.
   // useEffect(() => {
   //   const identifier = setTimeout(() => {
@@ -68,8 +68,9 @@ const Login = (props) => {
   //   };
   // }, [emailState, passwordState]);
 
-  // Another aproach is using object destructuring to get only the property that we want to check
-  // In this case the isValid property from email and password
+  // Another approach is using object destructuring to get only the property that we want to check.
+  // In this case the isValid property from email and password. This way we check only once the validity when it changes
+  // as useEffect only runs its code when the props passed as param change.
   useEffect(() => {
     const identifier = setTimeout(() => {
       console.log("Checking form validity!");
