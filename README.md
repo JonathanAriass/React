@@ -34,5 +34,7 @@ In the [useReducer project](https://github.com/JonathanAriass/React/tree/main/us
 
 ### Rules of Hooks
 Hooks can only be called inside a React function component or a custom React Hook component, meaning that is has to be inside the declaration of the component.
+
 Also we can't nest React hooks neither if statements, so we need to call them on the top level.
-Inside the useEffect() hook we need to remember to add all we use on the hook as a dependency (don't do it if there is a bigger reason not to).
+
+Inside the useEffect() hook we need to remember to add all we use on the hook as a dependency (don't do it if there is a bigger reason not to). For example if we are using a function such as setFormIsValid (useState() hoook) we don't need to add such function as dependency because React ensures that it won't change.
