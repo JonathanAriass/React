@@ -30,5 +30,7 @@ const Home = (props) => {
 
 In the [useReducer project](https://github.com/JonathanAriass/React/tree/main/useReduce) you will find a bigger use of Context hook usage.
 
+
+
 ### Rules of Hooks
 Hooks can only be called inside a React function component or a custom React Hook component, meaning that is has to be inside the declaration of the component.
