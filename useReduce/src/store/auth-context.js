@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+// NOTE: Context is good for low frecuency changes (stated by react member)
+
 // Important to have set the function prototypes on the AuthContext.
 const AuthContext = React.createContext({
   isLoggedIn: false,
