@@ -1,37 +1,28 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 const SimpleInput = (props) => {
-  // With the ref we only access the DOM element once (when needed), instead of every time the component is rendered
-  const nameInputRef = useRef();
-
   // We use the useState hook to keep track of the value of the input always
   const [enteredName, setEnteredName] = useState("");
-
-  // We use the useState hook to keep track of the validity of the input
-  const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
 
   // We use the useState hook to keep track of the state of the validity
   const [enteredNameTouched, setEnteredNameTouched] = useState(false);
 
+  // We save some code by using a constant instead of a state
+  const enteredNameIsValid = enteredName.trim() !== "";
+
+  let formIsValid = false;
+
+  // We can check for all the validity of the form if we want (example: several inputs)
+  if (enteredNameIsValid) {
+    formIsValid = true;
+  }
+
   const nameInputChangeHandler = (event) => {
     setEnteredName(event.target.value);
-
-    // We check if the input has a valid input
-    // It is necessary to check on the event.target.value because the value of the input is not updated yet on the state
-    if (event.target.value.trim().length !== 0) {
-      setEnteredNameIsValid(true);
-    } else {
-      setEnteredNameIsValid(false);
-    }
   };
 
   const nameInputBlurHandler = (event) => {
     setEnteredNameTouched(true);
-
-    // We check if the input is empty
-    if (enteredName.trim().length === 0) {
-      setEnteredNameIsValid(false);
-    }
   };
 
   const formSubmissionHandler = (event) => {
@@ -40,24 +31,16 @@ const SimpleInput = (props) => {
     setEnteredNameTouched(true);
 
     // We check if the input is empty
-    if (enteredName.trim().length === 0) {
-      setEnteredNameIsValid(false);
+    if (!enteredNameIsValid) {
       return;
     }
-
-    setEnteredNameIsValid(true);
-
-    console.log(enteredName);
-
-    const enteredValue = nameInputRef.current.value; // Pointer to the current input element
-    console.log(enteredValue);
 
     // We can also access the DOM element directly
     //nameInputRef.current.value = ""; // Clear the input (not the ideal way to do it, cause we are changing the DOM directly)
     setEnteredName(""); // Reset the input value
+    setEnteredNameTouched(false); // Reset the input state
   };
 
-  //
   const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
 
   // We use the css class needed for the validity of the input
@@ -70,7 +53,6 @@ const SimpleInput = (props) => {
       <div className={nameInputClasses}>
         <label htmlFor="name">Your Name</label>
         <input
-          ref={nameInputRef}
           type="text"
           id="name"
           onChange={nameInputChangeHandler}
@@ -82,7 +64,7 @@ const SimpleInput = (props) => {
         )}
       </div>
       <div className="form-actions">
-        <button>Submit</button>
+        <button disabled={!formIsValid}>Submit</button>
       </div>
     </form>
   );
