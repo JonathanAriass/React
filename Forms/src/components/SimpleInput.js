@@ -1,21 +1,23 @@
-import { useState } from "react";
+import useInput from "../hooks/use-input";
 
 const SimpleInput = (props) => {
-  // We use the useState hook to keep track of the value of the input always
-  const [enteredName, setEnteredName] = useState("");
+  const {
+    value: enteredName,
+    isValid: enteredNameIsValid,
+    hasError: nameInputHasError,
+    valueChangeHandler: nameChangeHandler,
+    inputBlurHandler: nameBlurHandler,
+    reset: resetNameInput,
+  } = useInput((value) => value.trim() !== "");
 
-  // We use the useState hook to keep track of the state of the validity
-  const [enteredNameTouched, setEnteredNameTouched] = useState(false);
-
-  const [enteredEmail, setEnteredEmail] = useState("");
-
-  const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
-
-  // We save some code by using a constant instead of a state
-  const enteredNameIsValid = enteredName.trim() !== "";
-
-  // We save some code by using a constant instead of a state
-  const enteredEmailIsValid = enteredEmail.includes("@");
+  const {
+    value: enteredEmail,
+    isValid: enteredEmailIsValid,
+    hasError: emailInputHasError,
+    valueChangeHandler: emailChangeHandler,
+    inputBlurHandler: emailBlurHandler,
+    reset: resetEmailInput,
+  } = useInput((value) => value.includes("@"));
 
   let formIsValid = false;
 
@@ -24,50 +26,30 @@ const SimpleInput = (props) => {
     formIsValid = true;
   }
 
-  const nameInputChangeHandler = (event) => {
-    setEnteredName(event.target.value);
-  };
-
-  const nameInputBlurHandler = (event) => {
-    setEnteredNameTouched(true);
-  };
-
-  const emailInputChangeHandler = (event) => {
-    setEnteredEmail(event.target.value);
-  };
-
-  const emailInputBlurHandler = (event) => {
-    setEnteredEmailTouched(true);
-  };
-
   const formSubmissionHandler = (event) => {
     event.preventDefault();
-
-    setEnteredNameTouched(true);
 
     // We check if the input is empty
     if (!enteredNameIsValid) {
       return;
     }
 
+    // We need to reset the inputs after submitting the form
+    resetNameInput();
+    resetEmailInput();
+
     // We can also access the DOM element directly
     //nameInputRef.current.value = ""; // Clear the input (not the ideal way to do it, cause we are changing the DOM directly)
-    setEnteredName(""); // Reset the name input value
-    setEnteredEmail(""); // Reset the email input value
-    setEnteredNameTouched(false); // Reset the name input state
-    setEnteredEmailTouched(false); // Reset the email input state
+    //setEnteredEmail(""); // Reset the email input value
+    //setEnteredEmailTouched(false); // Reset the email input state
   };
 
-  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
-
-  const emailInputIsInvalid = !enteredEmailIsValid && enteredEmailTouched;
-
   // We use the css class needed for the validity of the input
-  const nameInputClasses = nameInputIsInvalid
+  const nameInputClasses = nameInputHasError
     ? "form-control invalid"
     : "form-control";
 
-  const emailInputClasses = emailInputIsInvalid
+  const emailInputClasses = emailInputHasError
     ? "form-control invalid"
     : "form-control";
 
@@ -78,11 +60,11 @@ const SimpleInput = (props) => {
         <input
           type="text"
           id="name"
-          onChange={nameInputChangeHandler}
-          onBlur={nameInputBlurHandler}
+          onChange={nameChangeHandler}
+          onBlur={nameBlurHandler}
           value={enteredName}
         />
-        {nameInputIsInvalid && (
+        {nameInputHasError && (
           <p className="error-text">Name must not be empty!</p>
         )}
       </div>
@@ -91,11 +73,11 @@ const SimpleInput = (props) => {
         <input
           type="text"
           id="email"
-          onChange={emailInputChangeHandler}
-          onBlur={emailInputBlurHandler}
+          onChange={emailChangeHandler}
+          onBlur={emailBlurHandler}
           value={enteredEmail}
         />
-        {emailInputIsInvalid && (
+        {emailInputHasError && (
           <p className="error-text">Name must not be empty!</p>
         )}
       </div>
