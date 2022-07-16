@@ -16,9 +16,8 @@ const AvailableMeals = () => {
   useEffect(() => {
     // The overall useEffect shouldn't return a promise (async/await is not allowed in useEffect), that is why we use an inner function
     const fetchMeals = async () => {
-      const response = await fetch(
-        "https://react-http-ea9c9-default-rtdb.europe-west1.firebasedatabase.app/meals.json"
-      ); // fetching data from firebase
+      // Link to Firebase db/meals.json
+      const response = await fetch("meals.json"); // fetching data from firebase
 
       if (!response.ok) {
         throw new Error("Something went wrong");
