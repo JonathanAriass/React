@@ -33,13 +33,16 @@ const Cart = (props) => {
     setIsSubmitting(true);
 
     // Link to Firebase/orders.json
-    const response = await fetch("orders.json", {
-      method: "POST",
-      body: JSON.stringify({
-        user: userData,
-        orderedItems: cartCtx.items,
-      }),
-    });
+    const response = await fetch(
+      "https://react-http-ea9c9-default-rtdb.europe-west1.firebasedatabase.app/orders.json",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          user: userData,
+          orderedItems: cartCtx.items,
+        }),
+      }
+    );
 
     // Reset cart and config state
     setDidSubmit(true);
