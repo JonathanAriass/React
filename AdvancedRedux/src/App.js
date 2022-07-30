@@ -6,6 +6,7 @@ import Layout from "./components/Layout/Layout";
 import Products from "./components/Shop/Products";
 import Notification from "./components/UI/Notification";
 import { uiActions } from "./store/ui-slice";
+import { sendCartData } from "./store/cart-slice";
 
 let isInitialRender = true;
 
@@ -16,49 +17,12 @@ function App() {
   const notification = useSelector((state) => state.ui.notification);
 
   useEffect(() => {
-    const sendCardData = async () => {
-      dispatch(
-        uiActions.showNotification({
-          status: "pending",
-          message: "Loading...",
-          title: "Sending cart data!",
-        })
-      );
-      const response = await fetch(
-        "https://react-http-ea9c9-default-rtdb.europe-west1.firebasedatabase.app/cart.json",
-        {
-          method: "PUT", // PUT request override exisiting data
-          body: JSON.stringify(cart),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Sending cart data failed!");
-      }
-
-      dispatch(
-        uiActions.showNotification({
-          status: "success",
-          message: "Successfully sent cart data!",
-          title: "Success cart data!",
-        })
-      );
-    };
-
     if (isInitialRender) {
       isInitialRender = false;
       return;
     }
 
-    sendCardData().catch((error) => {
-      dispatch(
-        uiActions.showNotification({
-          status: "error",
-          message: "Something went wrong!",
-          title: "Error!",
-        })
-      );
-    });
+    dispatch(sendCartData(cart));
   }, [cart, dispatch]);
 
   return (
