@@ -52,7 +52,10 @@ export const sendCartData = (cart) => {
         "https://react-http-ea9c9-default-rtdb.europe-west1.firebasedatabase.app/cart.json",
         {
           method: "PUT", // PUT request override exisiting data
-          body: JSON.stringify(cart),
+          body: JSON.stringify({
+            items: cart.items,
+            totalQuantity: cart.totalQuantity,
+          }),
         }
       );
 
